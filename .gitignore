@@ -1,0 +1,16 @@
+# Sensitive Files
+
+# API keys and credentials
+.env
+*.json
+
+# Screenshots
+*.png
+*.jpg
+*.jpeg
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.swp
