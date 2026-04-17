@@ -1,0 +1,15 @@
+Summary:
+The NordPass Android application is vulnerable to sensitive data disclosure in RAM. Specifically, the SQLCipher Master Key and critical database configuration strings (PRAGMA statements) are processed as plain text in the application's heap memory during database initialization. Although the application attempts to delete the key after use, a Time-to-Use (TOCTOU) vulnerability exists. An automated memory scraping script can capture the 64-character hexadecimal key within milliseconds before it is deleted. This allows a local attacker to bypass the "Zero-Knowledge" architecture and decrypt the local vault.db without the user's Master Password.
+Tested Application Version: 5.10.3
+Reproduction Steps:
+Launch and Authenticate: Open the NordPass application on an Android device and log in using your Master Password or Biometric data to trigger the database decryption process. Automatic Tracing: Deploy an automated memory tracing tool or script for the application's process (e.g., a Frida hook on the sqlite3_key function or a high-frequency Python memory scraper).
+Pattern Matching: Configure the script to scan for the SQLCipher hexadecimal key pattern x'[0-9a-f]{64}' or the PRAGMA cipher_page_size string prefix.
+Key Capture: Observe that the script successfully captures the full 64-character hexadecimal encryption key as soon as the database handle is opened.
+Decryption (PoC): Extract the local encrypted database file (typically located at /data/data/com.nordpass.android.app.password.manager/databases/) and prove that the database can be fully decrypted externally using the captured key with an SQLCipher command-line tool. Note: Manual inspection with graphical user interface (GUI) based tools may fail due to rapid memory cleanup, but automated programmatic access proves the key has been exposed.
+
+Impact:
+The impact of this vulnerability is CRITICAL, as it directly bypasses the core security promise of a password manager, namely the Zero Knowledge architecture.
+
+Compulsion of Complete Vault Security: An attacker who successfully obtains the SQLCipher key can decrypt the user's local database. This provides access to all stored credentials, including master passwords for other services, credit card information, and secure notes, without any user interaction beyond the initial application unlock.
+
+Malware Exploitation: A malicious application residing on the same device (even with limited permissions) can act as a "silent memory scraper." By monitoring RAM in the background, it can leak the encryption key and vault file to a remote server, leading to a major data breach for the user. Biometric/PIN Security Bypass: Since the key is the "root of trust" for local storage, its disclosure allows an attacker to access data by bypassing all front-end security measures that the vault needs to protect, such as biometrics, PINs, or Two-Factor Authentication (2FA). Architectural Weakness: The presence of plain text keys and internal configurations (PRAGMA statements) indicates a lack of memory hiding, making the application a high-value target for reverse engineering and automated exploitation. 
