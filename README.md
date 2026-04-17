@@ -24,3 +24,5 @@ Response: The company excluded this from the bounty program, stating that "local
 Researcher's Note: While the local access requirement reduces the risk, it is technically possible for malware on the device to silently extract this key in the background and leak the entire vault.
 
 Note: These texts are for educational purposes only. 
+
+My report is in the files. 
