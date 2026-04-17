@@ -26,3 +26,5 @@ Researcher's Note: While the local access requirement reduces the risk, it is te
 Note: These texts are for educational purposes only. 
 
 My report is in the files. 
+
+This process does not require root privileges if it works in a virtual environment or with cloning applications... 
