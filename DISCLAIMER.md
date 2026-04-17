@@ -1,0 +1,3 @@
+# DISCLAIMER
+
+This project is for educational purposes only. Unauthorized access to computer systems, networks, or accounts is illegal and strictly prohibited. The author does not accept any responsibility for misuse or damage resulting from the use of this material. Please be informed that misuse of information herein may lead to criminal prosecution and penalties, including but not limited to fines and imprisonment.
